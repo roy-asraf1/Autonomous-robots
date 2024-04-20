@@ -1,18 +1,17 @@
 import sys, os, csv
-parent_directory = os.path.split(os.getcwd())[0]
-ephemeris_data_directory = os.path.join(parent_directory, 'data')
-sys.path.insert(0, parent_directory)
 from datetime import datetime, timezone, timedelta
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import navpy
-import EphemerisManager
-# from gnssutils import *
-# from pygnssutils import *
+from gnssutils import EphemerisManager
+from datetime import datetime
+from pandas import to_datetime
 # explanation how to run this python script in the terminal:
 # python3 task_code.py
-
+parent_directory = os.path.split(os.getcwd())[0]
+ephemeris_data_directory = os.path.join(parent_directory, 'data')
+sys.path.insert(0, parent_directory)
 
 print("Task 1: Read the data from the file")
 input_filepath = "fixed.txt"
@@ -162,10 +161,10 @@ df['Doppler'] = measurements['PseudorangeRateMetersPerSecond']
 pd.set_option('display.max_columns', None)
 
 print(df.head())
-
+df.to_csv('output.csv')
 
 #manager = EphemerisManager(ephemeris_data_directory)
-manager = EphemerisManager.EphemerisManager(ephemeris_data_directory)
+manager = EphemerisManager(ephemeris_data_directory)
 
 epoch = 0
 num_sats = 0
