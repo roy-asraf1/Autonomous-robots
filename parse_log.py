@@ -27,7 +27,7 @@ def parse_log_to_csv(log_filename, csv_filename):
         for entry in csv_data:
             file.write(entry + "\n")
 
-parse_log_to_csv("driving.txt", "data.csv")
+parse_log_to_csv("driving.txt", "data.csv") #need to add data for standing and walking
 current_directory = os.path.dirname(__file__)
 file_name = 'data.csv'
 file_path = os.path.join(current_directory, file_name)
@@ -116,7 +116,6 @@ r_weights =  df['CN0']
 pos_est = rms_positioning(data, gps_time, sat_mask, r_weights)
 print(f"location: {pos_est}") 
 df['Sat.X'],df['Sat.Y'],df['Sat.Z']= rms_positioning(data, gps_time, sat_mask, r_weights)
-
 df['Sat.X'] = pd.to_numeric(df['Sat.X'])
 df['Sat.Y'] = pd.to_numeric(df['Sat.Y'])
 df['Sat.Z'] = pd.to_numeric(df['Sat.Z'])
