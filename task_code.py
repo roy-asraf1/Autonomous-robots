@@ -165,7 +165,7 @@ print(df.head())
 
 
 #manager = EphemerisManager(ephemeris_data_directory)
-manager = EphemerisManager.EphemerisManager(ephemeris_data_directory)
+manager = EphemerisManager(ephemeris_data_directory)
 
 epoch = 0
 num_sats = 0
