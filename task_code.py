@@ -330,3 +330,5 @@ plt.title('Position Offset from First Epoch')
 plt.xlabel("East (m)")
 plt.ylabel("North (m)")
 plt.gca().set_aspect('equal', adjustable='box')
+print("elor hamelech")
+
