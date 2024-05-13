@@ -192,6 +192,9 @@ print(one_epoch[['UnixTime', 'tTxSeconds', 'GpsWeekNumber']])
 # y_k = x_k_prime*sin(Omega_k) + y_k_prime*cos(i_k)*cos(Omega_k)
 # z_k = y_k_prime*sin(i_k)
 
+
+# This function is used to calculate the satellite position
+# which mean the x, y, z coordinates of the satellite
 def calculate_satellite_position(ephemeris, transmit_time):
     mu = 3.986005e14
     OmegaDot_e = 7.2921151467e-5
@@ -249,7 +252,55 @@ def calculate_satellite_position(ephemeris, transmit_time):
 
 # Run the function and check out the results:
 sv_position = calculate_satellite_position(ephemeris, one_epoch['tTxSeconds'])
+print("Satellite position:\n")
 print(sv_position)
+print("Measurements:\n")
+print(one_epoch)
+print("End of Measurements\n")
+
+# Calculate receiver position using satellite positions and pseudo-ranges
+def calculate_receiver_position(satellite_positions, pseudo_ranges):
+    # Initial estimate for receiver position (just pick a point, can be improved)
+    x = 0
+    y = 0
+    z = 0
+    
+    # Weight matrix (inverse of measurement error covariance matrix)
+    W = np.diag(1 / pseudo_ranges['PrSigmaM']**2)
+    
+    # Iterative least squares solution
+    max_iterations = 10
+    for _ in range(max_iterations):
+        # Compute range predictions
+        predicted_ranges = np.sqrt((satellite_positions['x_k'] - x)**2 + 
+                                    (satellite_positions['y_k'] - y)**2 + 
+                                    (satellite_positions['z_k'] - z)**2)
+        
+        # Compute residuals
+        residuals = predicted_ranges - pseudo_ranges['PrM']
+        
+        # Weighted least squares solution
+        A = np.vstack((satellite_positions['x_k'] - x,
+                       satellite_positions['y_k'] - y,
+                       satellite_positions['z_k'] - z,
+                       np.ones(len(satellite_positions)))).T
+        delta = np.linalg.lstsq(A.T @ W @ A, A.T @ W @ residuals, rcond=None)[0]
+        
+        # Update receiver position
+        x -= delta[0]
+        y -= delta[1]
+        z -= delta[2]
+        
+        # Check convergence (assuming a small change in position)
+        if np.linalg.norm(delta[:3]) < 1e-6:
+            break
+    
+    return x, y, z
+
+# Calculate receiver position using the function
+receiver_position = calculate_receiver_position(sv_position, one_epoch)
+print("Receiver Position (x, y, z):", receiver_position)
+
 
 #initial guesses of receiver clock bias and position
 b0 = 0
