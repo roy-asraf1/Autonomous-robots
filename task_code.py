@@ -6,10 +6,10 @@ import numpy as np
 import navpy
 from gnssutils import EphemerisManager
 import matplotlib.pyplot as plt
-
-# Ignore FutureWarnings
+import argparse  # Import argparse for command-line argument parsing
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+
+warnings.simplefilter(action='ignore', category=FutureWarning) # Ignore FutureWarnings
 
 # Constants Definitions
 WEEKSEC = 604800
@@ -289,5 +289,9 @@ def plot_position_offset(ned_df, show):
     else:
         pass
 
+
 if __name__ == "__main__":
-    main('driving.txt')
+    parser = argparse.ArgumentParser(description="Process GNSS data from a specified file.")
+    parser.add_argument('file_path', type=str, help='Path to the GNSS data file')
+    args = parser.parse_args()
+    main(args.file_path)
