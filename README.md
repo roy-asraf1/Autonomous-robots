@@ -99,6 +99,12 @@ In the task_code.py there is a function `plot_position_offset(ned_df, show)`
 and as it's argument you can change to 'True' to get the visualization inside the IDE. (Read the comment for this in the code) 
 
 
+## Unit test to check the functions
+```bash
+python test_gnss.py
+```
+
+
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for details.
 
