@@ -55,7 +55,7 @@ def main(file_path):
 
     # Save LLA and NED data to CSV files
     pd.DataFrame(lla_array, columns=['Latitude', 'Longitude', 'Altitude']).to_csv('calculated_position_lla.csv', index=False)
-    pd.DataFrame(ned_array, columns=['N', 'E', 'D']).to_csv('ned_position.csv', index=False)
+    pd.DataFrame(ned_array, columns=['N', 'E', 'D'])
 
     # Create DataFrame with Pos.X, Pos.Y, Pos.Z, Lat, Lon, Alt
     final_df = pd.DataFrame({
@@ -291,5 +291,3 @@ def plot_position_offset(ned_df, show):
 
 if __name__ == "__main__":
     main('driving.txt')
-    main('walking.txt')
-    main('fixed.txt')
