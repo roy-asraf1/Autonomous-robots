@@ -137,9 +137,9 @@ def calculate_satellite_position(ephemeris, transmit_time):
 
     sv_position['Sat_X'] = (x_k_prime * np.cos(Omega_k) -
                           y_k_prime * np.cos(i_k) * np.sin(Omega_k))
-    sv_position['Sat_y'] = (x_k_prime * np.sin(Omega_k) +
+    sv_position['Sat_Y'] = (x_k_prime * np.sin(Omega_k) +
                           y_k_prime * np.cos(i_k) * np.cos(Omega_k))
-    sv_position['Sat_z'] = y_k_prime * np.sin(i_k)
+    sv_position['Sat_Z'] = y_k_prime * np.sin(i_k)
     sv_position['CN0'] = transmit_time['Cn0DbHz'] # Signal strength
 
     return sv_position
@@ -264,7 +264,7 @@ def calculate_ecef_coordinates(measurements, manager, sv_position, timestamp, sa
             ephemeris = manager.get_ephemeris(timestamp, sats)
             sv_position = calculate_satellite_position(ephemeris, one_epoch)
 
-            xs = sv_position[['Sat_X', 'Sat_y', 'Sat_z']].to_numpy()
+            xs = sv_position[['Sat_X', 'Sat_Y', 'Sat_Z']].to_numpy()
             pr = one_epoch['PrM'] + LIGHTSPEED * sv_position['delT_sv']
             pr = pr.to_numpy()
 
